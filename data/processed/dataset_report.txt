@@ -1,0 +1,111 @@
+================================================================================
+                    HINGLISHGUARD AI - DATASET AUDIT REPORT
+================================================================================
+Generated Date: 2026-11-07
+File Audited: data/raw/combined_hate_speech_dataset.csv
+File Size: ~7.18 MB (7,526,908 bytes)
+
+--------------------------------------------------------------------------------
+1. FILE SPECIFICATIONS & SHAPE
+--------------------------------------------------------------------------------
+- Total Records (Rows): 29,550
+- Total Features (Columns): 9
+- Column Names:
+    1. text             (object)  - Raw text statement
+    2. hate_label       (int64)   - Ground truth binary classification label
+    3. source           (object)  - Originating sub-dataset source
+    4. profanity_score  (int64)   - Numerical severity indicator (0-10)
+    5. language         (object)  - Language tag ('english', 'hindi', 'hinglish')
+    6. dataset_version  (object)  - Version tag ('v1.0')
+    7. combined_date    (object)  - Compilation timestamp ('2025-09-11')
+    8. text_length      (int64)   - Character length count
+    9. word_count       (int64)   - Whitespace word count
+
+--------------------------------------------------------------------------------
+2. MISSING VALUES & EMPTY TEXT ENTRIES
+--------------------------------------------------------------------------------
+- Null / NaN Values:
+    text:               0 missing (0.00%)
+    hate_label:         0 missing (0.00%)
+    source:             0 missing (0.00%)
+    profanity_score:    0 missing (0.00%)
+    language:           0 missing (0.00%)
+    dataset_version:    0 missing (0.00%)
+    combined_date:      0 missing (0.00%)
+    text_length:        0 missing (0.00%)
+    word_count:         0 missing (0.00%)
+- Empty String / Whitespace-only Text: 0 records (0.00%)
+
+--------------------------------------------------------------------------------
+3. TARGET LABEL ANALYSIS & CLASS DISTRIBUTION
+--------------------------------------------------------------------------------
+Target Column: 'hate_label'
+Supported Classification Type: BINARY (0 and 1)
+Note: The dataset does NOT support a direct 3-class setup (Neutral, Offensive, Hate)
+      as 'hate_label' only contains binary integers 0 and 1.
+
+Class Breakdown:
+  - Class 0 (Non-Hate / Normal): 15,825 rows (53.55%)
+  - Class 1 (Hate / Toxic):      13,725 rows (46.45%)
+
+Class Imbalance Assessment:
+  - Ratio: 1.15 : 1 (Mild / Well-balanced overall).
+  - No extreme minority class starvation on the overall dataset.
+
+--------------------------------------------------------------------------------
+4. LANGUAGE & DATA SOURCE BREAKDOWN
+--------------------------------------------------------------------------------
+The dataset is a multi-source compilation combining 3 language types:
+
+Language Breakdown:
+  - English:   15,000 rows (50.76%) -> Clean 50/50 split (7,500 non-hate, 7,500 hate)
+  - Hindi:      9,767 rows (33.05%) -> Devanagari script (5,411 class 0, 4,356 class 1)
+  - Hinglish:   4,783 rows (16.19%) -> Romanized Hindi/English code-mixed (2,914 class 0, 1,869 class 1)
+
+Source Breakdown:
+  - 'english_dataset': 15,000 records (pure English text)
+  - 'hindi_dataset':    9,767 records (pure Hindi Devanagari text)
+  - 'hate_speech_tsv':  4,574 records (Hinglish code-mixed sentences)
+  - 'profanity_list':     209 records (isolated Hinglish profanity words, e.g., 'chutiya', 'chinaal')
+
+Key Observation on Genuine Hinglish:
+  - Only 4,783 records (16.19%) are genuine code-mixed Hinglish.
+  - 83.81% of the dataset consists of monolingual English (Latin script) or monolingual Hindi (Devanagari script).
+
+--------------------------------------------------------------------------------
+5. DUPLICATES & DATA LEAKAGE AUDIT
+--------------------------------------------------------------------------------
+- Exact Full-Row Duplicates: 6 records
+- Exact Text Duplicates: 11 duplicate records (across 22 total rows)
+- Contradictory Label Conflicts (Same text mapped to BOTH label 0 and label 1):
+  2 distinct text entries have conflicting annotations:
+    1. English text: "who the hell do you think you are how dare you..." (Row 16943 vs 25919)
+    2. Hindi text: "पालघर की तर्ज पर पंजाब के होशियार पुर में संत ..." (Row 5974 vs 9360)
+  Recommendation: Deduplicate text and resolve conflicting labels before train/test splitting.
+
+--------------------------------------------------------------------------------
+6. FIRST 10 RECORDS PREVIEW
+--------------------------------------------------------------------------------
+[0] label=0 | lang=hinglish | source=hate_speech_tsv | text="Knowing ki Vikas kitna samjhata hai Priyanka aur Itch Guard Luv ko, usne bola tha Ben wali baat me ab Sallu ne bhi agree kiya!"
+[1] label=0 | lang=hinglish | source=hate_speech_tsv | text="I am Muhajir .. Aur mere lye sab se Pehly Pakistan he .. agr 10 lakh Altaf Jese leaders bh is zameen ki behurmati kren un sbko sar e aam phansi Deni chahye .. Proud to be a #Muhajir and #Pakistani"
+[2] label=0 | lang=hinglish | source=hate_speech_tsv | text="Doctor  sab sahi me ke PhD (in hate politics) wale. Bhai padhe likhe ho fir kyu ye sab baate karte ho. Tum bas bowling  khelo, aur maje lo. pic.twitter.com/fk1qUbQstw"
+[3] label=0 | lang=hinglish | source=hate_speech_tsv | text="Poore Desh me Patel OBC me aate Hain sirf gujrat Ko chor kar may be, ye manuwadi media wale Patel Ko badnaam Kar rahe Hain."
+[4] label=1 | lang=hinglish | source=hate_speech_tsv | text="Sarkar banne ke bad Hindu hit me ek bhi faisla Jo bjp ke dwara liya gaya ho,bjp sirf congress ki raste par chal rahi he Hindu Ko bevkoof banakar"
+[5] label=1 | lang=hinglish | source=hate_speech_tsv | text="Hate it jab test ata ho phr bh acha na ho -.-"
+[6] label=0 | lang=hinglish | source=hate_speech_tsv | text="Ek dil ek jaan akal ke imitihaan kal KP ke rape aur sawing between two legs after giving them safe passage in Kashmir par chup the... Kashmiri Hindus had no safe passage... #TheKashmirFiles"
+[7] label=1 | lang=hinglish | source=hate_speech_tsv | text="Aise logo se sakht nafrat karta hu Jo caste ko naam ke sath jod ke chaude hote h... Khud to jhaant barabar aukaat nahi hoti"
+[8] label=1 | lang=hinglish | source=hate_speech_tsv | text="Sir, jyada sentimental mat ho jao peene ke baad.Jiss desh ki buniyad sirf Hindu virodh par tiki hai waha humare mandir bachenge ye sochna bewakoofi hai."
+[9] label=0 | lang=hinglish | source=hate_speech_tsv | text="I am very sorry to say saaf dil shilpa ke fans hiten ke dil mein kya hai woh bhi nahi samajh paaye."
+
+--------------------------------------------------------------------------------
+7. ARCHITECTURAL & CLASSIFICATION RECOMMENDATIONS
+--------------------------------------------------------------------------------
+1. Classification Formulation:
+   - Primary Task: Binary Classification (0 = Non-Hate / Neutral, 1 = Hate / Abusive).
+   - 3-Class Strategy (Future / Hybrid Agent):
+     Since the ground truth provides binary labels (0 vs 1), a 3-class setup cannot be directly trained via supervised learning without synthetic re-annotation. However, in our hybrid architecture, the LLM Moderation Agent (Gemini) and Policy Engine can map binary prediction confidence alongside profanity scores to distinguish between Neutral, Offensive (profane/abusive without targeted group hatred), and Hate Speech (targeted attack on identity/community).
+
+2. Evaluation & Baseline Model Cohort:
+   - Stratified Evaluation on Hinglish: Ensure the validation/test splits are stratified by both `hate_label` and `language` so that the model's performance on pure Hinglish (`language == 'hinglish'`) is tracked independently from standard English and Devanagari Hindi.
+   - De-duplication: Drop the 6 full duplicates and resolve the 2 label contradiction collisions prior to training.
+================================================================================

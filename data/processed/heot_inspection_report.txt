@@ -1,0 +1,130 @@
+================================================================================
+          HINGLISHGUARD AI - HEOT REPOSITORY INSPECTION REPORT
+================================================================================
+Generated Date: 2026-11-07
+Inspected Directory: data/raw/heot_source/
+Existing Dataset Untouched: data/raw/combined_hate_speech_dataset.csv (Verified Unmodified)
+
+--------------------------------------------------------------------------------
+1. FILES IDENTIFIED IN REPOSITORY
+--------------------------------------------------------------------------------
+The directory contains two files:
+1. README.md                     (1,421 bytes, UTF-8 text)
+2. Hinglish_Profanity_List.csv   (3,929 bytes, Windows-1252 / Latin-1 encoded CSV)
+
+NOTE ON MISSING TWEET DATASET:
+The repository README clarifies that the full tweet dataset ("HOT" - Hinglish Offensive
+Tweets) is NOT included in this repository due to Twitter's privacy and data redistribution
+policies. Only the Hinglish Profanity lexicon (word list) was publicly shared.
+
+--------------------------------------------------------------------------------
+2. DATASET STRUCTURE & FILE FORMAT
+--------------------------------------------------------------------------------
+File: Hinglish_Profanity_List.csv
+- Encoding: Latin-1 / Windows-1252 (contains byte 0xA0 non-breaking spaces)
+- Header: None (Row 0 contains data: 'badir,idiot,1')
+- Shape: 209 rows x 3 columns
+- Columns (Positional):
+    Column 0: Hinglish profanity word (string)
+    Column 1: English translation / meaning (string)
+    Column 2: Severity / Profanity intensity rating (integer score 1 to 10)
+
+--------------------------------------------------------------------------------
+3. RESEARCH DOCUMENTATION & PAPER CONTEXT
+--------------------------------------------------------------------------------
+Paper Reference:
+"Did you offend me? Classification of Offensive Tweets in Hinglish Language"
+Authors: Puneet Mathur, Ramit Sawhney, Meghna Ayyar, Rajiv Shah
+Conference: 2nd Workshop on Abusive Language Online (ALW2), EMNLP 2018 (Brussels, Belgium)
+URL: http://aclweb.org/anthology/W18-5118
+
+In the research paper:
+- The full HOT dataset used a 3-class schema:
+    * Non-Offensive (Normal)
+    * Abusive (Unacceptable language without targeting)
+    * Hate Speech (Targeting an individual or community based on protected attributes)
+- However, the repository ONLY distributes the auxiliary Hinglish profanity lexicon,
+  consisting of 209 swear/insult words scored on a scale from 1 (mild) to 10 (extreme).
+
+--------------------------------------------------------------------------------
+4. TEXT & LABEL COLUMNS IN THE PROFANITY LIST
+--------------------------------------------------------------------------------
+- Text Column: Column 0 (single Hinglish profanity / abusive words)
+- Translation Column: Column 1 (English semantic gloss)
+- Original Label / Score Column: Column 2 (Profanity Intensity Score: integer 1-10)
+
+Unique Intensity Scores and Frequency Distribution:
+  Score 1:  25 entries (11.96%)  [e.g., 'badir', 'chup', 'ullu']
+  Score 2:  20 entries (9.57%)   [e.g., 'bhadva', 'kutton', 'jungli']
+  Score 3:  16 entries (7.66%)   [e.g., 'bhootnika', 'chinaal']
+  Score 4:  11 entries (5.26%)   [e.g., 'ghasti', 'jihadi', 'atankwadi']
+  Score 5:  13 entries (6.22%)   [e.g., 'chutia', 'chutiya', 'haraami']
+  Score 6:  20 entries (9.57%)   [e.g., 'kutti', 'raand']
+  Score 7:  34 entries (16.27%)  [e.g., 'chudwaya', 'madarchod']
+  Score 8:  45 entries (21.53%)  [e.g., 'bhenchod', 'gaandu']
+  Score 9:  19 entries (9.09%)   [e.g., 'gaandwe', 'madarjaat']
+  Score 10:  6 entries (2.87%)   [e.g., 'bc', 'mc']
+Total: 209 entries (100.00%)
+
+--------------------------------------------------------------------------------
+5. SUITABILITY FOR MAPPING TO TARGET CLASSES (Neutral, Offensive, Hate)
+--------------------------------------------------------------------------------
+Can this file be directly mapped to a 3-class text classification dataset?
+Answer: NO, not as a standalone classification dataset.
+Reasons:
+1. Lexicon, Not Sentence Corpus: This is a 209-word lexical dictionary of swear words,
+   not conversational sentences, tweets, or user posts.
+2. No "Neutral" Class: Every single entry is an offensive or vulgar term. There are ZERO
+   neutral/benign sentences or words.
+3. Word vs. Context Ambiguity: Isolated terms (e.g., 'jihadi', 'mc', 'kutta') cannot be
+   definitively categorized into "Offensive" vs "Hate Speech" in isolation without context,
+   as hate speech requires intent and group/identity targeting.
+4. Existing Overlap: These exact 209 words with these exact scores are already incorporated
+   in `data/raw/combined_hate_speech_dataset.csv` under `source == 'profanity_list'`.
+
+--------------------------------------------------------------------------------
+6. DATA INTEGRITY: MISSING VALUES & DUPLICATES
+--------------------------------------------------------------------------------
+- Null / Missing Values: 0 across all 3 columns.
+- Duplicate Rows: 0 exact 3-column duplicate rows.
+- Duplicate Words (Column 0): 3 words appear twice with slightly differing glosses/scores:
+    1. 'chinaal': Row 5 (score 3, 'whore') vs Row 133 (score 7, 'prostitute')
+    2. 'gaandu':  Row 69 (score 9, 'asshole') vs Row 110 (score 8, 'ass')
+    3. 'gandu':   Row 70 (score 9, 'asshole') vs Row 115 (score 8, 'faggot')
+
+--------------------------------------------------------------------------------
+7. HINGLISH CONTENT ANALYSIS
+--------------------------------------------------------------------------------
+- Total Entries: 209
+- Genuine Hinglish terms: 209 (100%).
+- Structure: All entries are Latin-script transliterated Hindi/Urdu curses, slurs,
+  and abusive expressions.
+
+--------------------------------------------------------------------------------
+8. LICENSING & ETHICAL CONSTRAINTS
+--------------------------------------------------------------------------------
+- License / Usage Terms: Research purposes only ("strictly for research purposes").
+- Redistribution Restriction: The paper authors note that Twitter policies prohibit
+  public distribution of tweet corpora without author consent, which is why the repository
+  only shares this profanity lexicon.
+- Citation Requirement: ALW2 Workshop at EMNLP 2018 (Mathur et al., 2018).
+
+--------------------------------------------------------------------------------
+9. RECOMMENDATIONS FOR THREE-CLASS CLASSIFICATION
+--------------------------------------------------------------------------------
+1. DO NOT use this file as a standalone training dataset for 3-class classification.
+2. DO NOT combine or overwrite `combined_hate_speech_dataset.csv` with this file.
+3. BEST USE FOR HEOT PROFANITY LIST:
+   - Use this file as a lexical feature / knowledge base for `src/policy_engine.py`
+     and `src/moderation_agent.py`.
+   - The 1-10 intensity score can assist the policy engine in determining threshold-based
+     actions (e.g., scores >= 8 trigger strict profanity flagging or escalation).
+4. SOURCING A TRUE 3-CLASS HINGLISH BENCHMARK:
+   - If genuine 3-class sentence-level training data is required, standard public corpora
+     with 3 explicit classes include:
+     * HASOC 2020 / 2021 Hindi-English Sub-task (NOT - Non-Offensive, HOF/Hate, HOF/Offensive)
+     * DravidianLangTech / SemEval code-mixed benchmarks.
+   - Alternatively, our system's hybrid architecture can retain the robust binary baseline
+     model (Class 0 vs Class 1) and use the LLM Moderation Agent + Policy Engine + Profanity
+     Lexicon to triage outputs into Neutral, Offensive, and Hate.
+================================================================================

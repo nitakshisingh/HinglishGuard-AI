@@ -1,0 +1,75 @@
+# Environment variables
+.env
+.env.local
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Model artifacts and checkpoints (weights, pickle files, torch models)
+*.pt
+*.pth
+*.bin
+*.pkl
+*.joblib
+*.onnx
+*.safetensors
+models/baseline/*
+!models/baseline/.gitkeep
+models/transformers/*
+!models/transformers/.gitkeep
+
+# Datasets and processed data files (CSV, Parquet, TSV)
+data/*.csv
+data/raw/*
+data/processed/*.csv
+data/processed/*.parquet
+data/processed/*.jsonl
+diagnostic_results.csv
+!data/processed/.gitkeep
+
+# Local databases and logs
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.sqlite
+logs/
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# OS generated files
+.DS_Store
+Thumbs.db

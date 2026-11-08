@@ -1,0 +1,226 @@
+{
+  "selected_model": {
+    "vectorizer": "Character n-grams (3,5)",
+    "C": 5.0,
+    "metrics": {
+      "accuracy": 0.8923166472642607,
+      "macro_precision": 0.7333165638322064,
+      "macro_recall": 0.7602105556442239,
+      "macro_f1": 0.7460105738886315,
+      "weighted_f1": 0.8948604917632379,
+      "classification_report": {
+        "Neutral": {
+          "precision": 0.9661924430166743,
+          "recall": 0.9426865671641791,
+          "f1-score": 0.954294779783939,
+          "support": 6700.0
+        },
+        "Offensive": {
+          "precision": 0.684596577017115,
+          "recall": 0.7446808510638298,
+          "f1-score": 0.7133757961783439,
+          "support": 1504.0
+        },
+        "Hate": {
+          "precision": 0.5491606714628298,
+          "recall": 0.5932642487046632,
+          "f1-score": 0.5703611457036114,
+          "support": 386.0
+        },
+        "accuracy": 0.8923166472642607,
+        "macro avg": {
+          "precision": 0.7333165638322064,
+          "recall": 0.7602105556442239,
+          "f1-score": 0.7460105738886315,
+          "support": 8590.0
+        },
+        "weighted avg": {
+          "precision": 0.8981488520640408,
+          "recall": 0.8923166472642607,
+          "f1-score": 0.8948604917632379,
+          "support": 8590.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          6316,
+          366,
+          18
+        ],
+        [
+          214,
+          1120,
+          170
+        ],
+        [
+          7,
+          150,
+          229
+        ]
+      ]
+    }
+  },
+  "alternate_model": {
+    "vectorizer": "Word n-grams (1,2)",
+    "C": 5.0,
+    "metrics": {
+      "accuracy": 0.8578579743888242,
+      "macro_precision": 0.6383081407374195,
+      "macro_recall": 0.6611537101451184,
+      "macro_f1": 0.6489171790873292,
+      "weighted_f1": 0.861476383852738,
+      "classification_report": {
+        "Neutral": {
+          "precision": 0.9529483654139933,
+          "recall": 0.931044776119403,
+          "f1-score": 0.9418692435452212,
+          "support": 6700.0
+        },
+        "Offensive": {
+          "precision": 0.6082345601996257,
+          "recall": 0.6482712765957447,
+          "f1-score": 0.6276150627615062,
+          "support": 1504.0
+        },
+        "Hate": {
+          "precision": 0.35374149659863946,
+          "recall": 0.40414507772020725,
+          "f1-score": 0.37726723095526,
+          "support": 386.0
+        },
+        "accuracy": 0.8578579743888242,
+        "macro avg": {
+          "precision": 0.6383081407374195,
+          "recall": 0.6611537101451184,
+          "f1-score": 0.6489171790873292,
+          "support": 8590.0
+        },
+        "weighted avg": {
+          "precision": 0.8656674091386574,
+          "recall": 0.8578579743888242,
+          "f1-score": 0.861476383852738,
+          "support": 8590.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          6238,
+          421,
+          41
+        ],
+        [
+          285,
+          975,
+          244
+        ],
+        [
+          23,
+          207,
+          156
+        ]
+      ]
+    }
+  },
+  "validation_tuning_experiments": [
+    {
+      "vectorizer_type": "word_ngrams_1_2",
+      "vectorizer_name": "Word n-grams (1,2)",
+      "C": 0.1,
+      "val_accuracy": 0.8003259983700082,
+      "val_macro_f1": 0.6084586129411544,
+      "val_weighted_f1": 0.8137156027599334,
+      "val_macro_precision": 0.580838543653564,
+      "val_macro_recall": 0.6647034375384342
+    },
+    {
+      "vectorizer_type": "word_ngrams_1_2",
+      "vectorizer_name": "Word n-grams (1,2)",
+      "C": 0.5,
+      "val_accuracy": 0.8272208638956805,
+      "val_macro_f1": 0.6384011926035121,
+      "val_weighted_f1": 0.8372797652529348,
+      "val_macro_precision": 0.6130429581398443,
+      "val_macro_recall": 0.6774336035650882
+    },
+    {
+      "vectorizer_type": "word_ngrams_1_2",
+      "vectorizer_name": "Word n-grams (1,2)",
+      "C": 1.0,
+      "val_accuracy": 0.843520782396088,
+      "val_macro_f1": 0.6562252244847798,
+      "val_weighted_f1": 0.8509293457597141,
+      "val_macro_precision": 0.6346317173966705,
+      "val_macro_recall": 0.6854575313065773
+    },
+    {
+      "vectorizer_type": "word_ngrams_1_2",
+      "vectorizer_name": "Word n-grams (1,2)",
+      "C": 2.0,
+      "val_accuracy": 0.8524857375713122,
+      "val_macro_f1": 0.6639323879152058,
+      "val_weighted_f1": 0.858172362332676,
+      "val_macro_precision": 0.6459971641926221,
+      "val_macro_recall": 0.6865161969344463
+    },
+    {
+      "vectorizer_type": "word_ngrams_1_2",
+      "vectorizer_name": "Word n-grams (1,2)",
+      "C": 5.0,
+      "val_accuracy": 0.8590057049714751,
+      "val_macro_f1": 0.6703783742709829,
+      "val_weighted_f1": 0.8631738359514931,
+      "val_macro_precision": 0.6567513022367831,
+      "val_macro_recall": 0.6863580590218011
+    },
+    {
+      "vectorizer_type": "char_ngrams_3_5",
+      "vectorizer_name": "Character n-grams (3,5)",
+      "C": 0.1,
+      "val_accuracy": 0.8429386424496449,
+      "val_macro_f1": 0.6789370422521208,
+      "val_weighted_f1": 0.8502314550411759,
+      "val_macro_precision": 0.6476842197553959,
+      "val_macro_recall": 0.7434716902218385
+    },
+    {
+      "vectorizer_type": "char_ngrams_3_5",
+      "vectorizer_name": "Character n-grams (3,5)",
+      "C": 0.5,
+      "val_accuracy": 0.871463499825358,
+      "val_macro_f1": 0.7278095794368064,
+      "val_weighted_f1": 0.8771186536479407,
+      "val_macro_precision": 0.6970845613465363,
+      "val_macro_recall": 0.7726983073182038
+    },
+    {
+      "vectorizer_type": "char_ngrams_3_5",
+      "vectorizer_name": "Character n-grams (3,5)",
+      "C": 1.0,
+      "val_accuracy": 0.8825241588077773,
+      "val_macro_f1": 0.7459824363527604,
+      "val_weighted_f1": 0.8870055826240643,
+      "val_macro_precision": 0.71941031059155,
+      "val_macro_recall": 0.7805014276519181
+    },
+    {
+      "vectorizer_type": "char_ngrams_3_5",
+      "vectorizer_name": "Character n-grams (3,5)",
+      "C": 2.0,
+      "val_accuracy": 0.8912562580044243,
+      "val_macro_f1": 0.7608443742639289,
+      "val_weighted_f1": 0.8946611215108555,
+      "val_macro_precision": 0.7385619126998485,
+      "val_macro_recall": 0.7878916772697998
+    },
+    {
+      "vectorizer_type": "char_ngrams_3_5",
+      "vectorizer_name": "Character n-grams (3,5)",
+      "C": 5.0,
+      "val_accuracy": 0.9005704971475142,
+      "val_macro_f1": 0.773551846862148,
+      "val_weighted_f1": 0.9025849353737696,
+      "val_macro_precision": 0.7599160432955688,
+      "val_macro_recall": 0.7886761753476009
+    }
+  ]
+}
