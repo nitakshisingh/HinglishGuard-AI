@@ -1,245 +1,415 @@
-# 🛡️ HinglishGuard AI: Hybrid Transformer & LLM Agent Content Moderation System
+# 🛡️ HinglishGuard AI
+### Hybrid Transformer-Based Hinglish Hate Speech Detection & Intelligent Content Moderation
 
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-EE4C2C.svg)](https://pytorch.org/)
-[![HuggingFace Transformers](https://img.shields.io/badge/Transformers-5.x%20%7C%204.x-orange.svg)](https://huggingface.co/)
-[![Google GenAI SDK](https://img.shields.io/badge/Google%20GenAI-Gemini%202.5%20Flash-4285F4.svg)](https://ai.google.dev/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.67+-FF4B4B.svg)](https://streamlit.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-EE4C2C)
+![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-orange)
+![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-4285F4)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.67+-FF4B4B)
+![Status](https://img.shields.io/badge/Status-Completed-success)
 
-An enterprise-grade, hybrid content moderation and hate speech detection platform designed specifically for **code-mixed Hindi-English (Hinglish)** social discourse.
+**HinglishGuard AI** is a hybrid AI-powered hate speech detection and content moderation system designed specifically for Hindi-English code-mixed (Hinglish) text.
 
-HinglishGuard AI bridges the gap between high-throughput supervised classification and nuanced contextual reasoning. It combines a fine-tuned **XLM-RoBERTa** multilingual transformer with a **Google Gemini 2.5 Flash** contextual moderation agent and a **deterministic Policy Engine** with a **Human-in-the-Loop (HITL)** review queue.
+It combines a fine-tuned XLM-RoBERTa transformer classifier, a Gemini 2.5 Flash contextual moderation agent, a deterministic policy engine, and a Human-in-the-Loop (HITL) review workflow.
 
----
-
-## 📌 Problem Statement & Motivation
-
-Code-mixed Hindi-English (**Hinglish**) is one of the fastest-growing forms of communication across South Asian social media. Traditional keyword blocklists and standard English/Hindi NLP classifiers fail catastrophically on Hinglish due to:
-1. **Unstandardized Phonetic Spelling**: Variations like *kutta*, *kuttaa*, *kuttey*, and *qutta*.
-2. **Grammatical Code-Mixing**: Unpredictable intra-sentential switching between Hindi syntax, English vocabulary, and regional vernaculars.
-3. **Contextual & Semantic Ambiguity**: General vulgar personal insults (*"tu stupid chutiya hai"*) vs. targeted communal or religious hate speech (*"ye log desh ke gaddar hain"*).
-4. **Subtle & Implicit Incitement**: Clean syntactic phrasing that advocates hatred or dehumanization without using explicit profanity (e.g., *"People from this community should be hated"*).
-
-HinglishGuard AI solves this with a **three-tier hybrid architecture**: supervised transformer classification handles latency-critical surface screening, an LLM agent resolves deep cultural/identity context, and a deterministic policy engine arbitrates decisions and routes ambiguities to human moderators.
+The system aims to distinguish general offensive language from targeted hate speech while providing transparent moderation decisions and human oversight.
 
 ---
 
-## ✨ Key Features
+## 📌 1. Problem Statement
 
-- **Three-Class Taxonomy**: Categorizes discourse strictly into `Neutral` (0), `Offensive` (1), or `Hate` (2).
-- **Fine-Tuned XLM-RoBERTa Engine**: High-accuracy contextual embeddings with dynamic sequence padding (128 tokens) and class-weighted cross-entropy loss.
-- **TF-IDF + Logistic Regression Baseline**: Optimized character n-gram (3–5) baseline ($C=5.0$) achieving 89.23% test accuracy.
-- **Contextual Gemini AI Moderation Agent**: Employs Google GenAI SDK (`gemini-2.5-flash`) with Pydantic structured output to detect identity targeting, target groups, severity, and cultural nuances without fabricating analysis.
-- **Deterministic Policy Engine**: Enforces strict safety rules, uncertainty thresholds ($< 0.70$), and disagreement arbitration without automatically deleting content or banning users.
-- **Human-in-the-Loop Review Queue**: Dedicated audit dashboard enabling human moderators to arbitrate flagged items, log notes, and update records to `RESOLVED` while preserving original model outputs.
-- **Real-Time Analytics Dashboard**: Visualizes operational telemetry, throughput trends, mean category confidence, and searchable audit logs using interactive Plotly charts.
-- **Robust Windows AMD64 Compatibility**: Replaces PyArrow-dependent dataframe rendering with Plotly figures and styled HTML tables to circumvent OS Application Control DLL load blocks (`WinError 4551`).
+Hinglish is widely used in online conversations, but detecting harmful content in code-mixed language presents several challenges:
+
+- **Non-standard spellings:** The same Hindi word can have multiple Romanized spellings.
+- **Code-mixing:** Hindi grammar and English vocabulary frequently appear within the same sentence.
+- **Contextual ambiguity:** General profanity and personal insults are different from targeted hate speech.
+- **Implicit hate speech:** Harmful statements may express hostility without containing explicit abusive words.
+- **Class imbalance:** Neutral examples are more common than offensive and hate speech examples.
+
+Traditional keyword-based filtering systems may fail to understand these linguistic and contextual differences.
+
+HinglishGuard AI addresses these challenges through a hybrid machine learning and LLM-based moderation architecture.
 
 ---
 
-## 🏛️ System Architecture & Workflow
+## ✨ 2. Key Features
+
+- **Three-Class Classification:** Categorizes text into Neutral, Offensive, or Hate.
+- **XLM-RoBERTa Classifier:** Fine-tuned multilingual transformer for Hinglish text classification.
+- **Machine Learning Baseline:** TF-IDF character n-grams with Logistic Regression.
+- **Gemini Moderation Agent:** Provides contextual analysis, identity-targeting detection, severity assessment, and linguistic signals.
+- **Deterministic Policy Engine:** Combines model confidence, contextual analysis, and predefined moderation rules.
+- **Human-in-the-Loop Review:** Allows moderators to review flagged content and record their decisions.
+- **SQLite Audit Trail:** Stores moderation records and human review information.
+- **Analytics Dashboard:** Displays moderation statistics, confidence distributions, and audit information.
+- **Model Lab:** Compares baseline and transformer predictions and performance.
+- **Streamlit Interface:** Provides an interactive multi-page application.
+
+### Classification Categories
+
+| Class ID | Category | Description |
+|---|---|---|
+| 0 | Neutral | Non-hateful conversational content |
+| 1 | Offensive | General profanity, vulgar language, or personal insults |
+| 2 | Hate | Targeted hateful or discriminatory content |
+
+---
+
+## 🏛️ 3. System Architecture
+
+The application follows a hybrid, multi-layer moderation architecture.
 
 ```mermaid
 flowchart TD
-    User(["User / Ingestion Stream"]) --> Preprocess["Preprocessing Pipeline (clean_text)<br/>• NFKC Normalization<br/>• URL / HTML Strip<br/>• Repeated Char Capping"]
+    A[Input Hinglish Text] --> B[Text Preprocessing]
+    B --> C[XLM-RoBERTa Classifier]
+    C --> D{Confidence and Risk Check}
+    D -->|Contextual Analysis Required| E[Gemini Moderation Agent]
+    D -->|No Additional Analysis Required| F[Policy Engine]
+    E --> F
+    F --> G{Policy Decision}
+    G -->|APPROVE| H[Content Approved]
+    G -->|FLAG| I[Content Flagged]
+    G -->|ESCALATE| J[Human Review Queue]
+    J --> K[Human Moderator]
+    K --> L[Review Decision and Audit Trail]
+    H --> M[SQLite Database]
+    I --> M
+    L --> M
+```
 
-    Preprocess --> XLM["Layer 1: Supervised Classifier<br/>(Fine-Tuned XLM-RoBERTa)<br/>• 3-Class Softmax Probabilities"]
+### Workflow Explanation
 
-    XLM --> DecisionCheck{"Confidence >= 0.70 AND<br/>No Identity Threat?"}
+**Layer 1 – Text Preprocessing**
 
-    DecisionCheck -- Confident & Low Risk --> Policy["Layer 3: Deterministic Policy Engine<br/>• Rules Arbitration<br/>• Non-Punitive Actions"]
-    DecisionCheck -- Borderline / Explicit Hate / User Request --> Gemini["Layer 2: LLM Moderation Agent<br/>(Gemini 2.5 Flash via GenAI SDK)<br/>• Sarcasm, Negation & Identity Targeting<br/>• Severity & Linguistic Signals"]
+- Text normalization.
+- URL and HTML removal.
+- Repeated character normalization.
+- Hinglish text cleaning.
 
-    Gemini --> Policy
+**Layer 2 – Supervised Classification**
 
-    Policy --> Action{"Policy Action"}
-    Action -- APPROVE --> Live["Content Approved"]
-    Action -- FLAG --> Warning["Content Flagged with Warning"]
-    Action -- ESCALATE_TO_HUMAN_REVIEW --> Queue["Layer 4: Human-in-the-Loop Queue<br/>• Stored in SQLite (moderation_records)<br/>• Pending Human Verification"]
+- Fine-tuned XLM-RoBERTa predicts one of three classes.
+- Generates class probabilities and confidence scores.
 
-    Queue --> Moderator(["Human Moderator"])
-    Moderator --> Resolve["Determination Saved in human_reviews<br/>• Original AI Predictions Preserved<br/>• Status Updated to RESOLVED"]
+**Layer 3 – Contextual Moderation Agent**
+
+- Gemini 2.5 Flash analyzes contextual meaning.
+- Identifies potential identity targeting.
+- Evaluates severity and linguistic signals.
+- Provides structured moderation analysis.
+
+**Layer 4 – Policy Engine and Human Review**
+
+- Evaluates classifier and contextual moderation outputs.
+- Handles uncertainty and model disagreements.
+- Produces APPROVE, FLAG, or ESCALATE_TO_HUMAN_REVIEW decisions.
+- Routes uncertain cases to human moderators.
+
+The Gemini agent does not directly overwrite the transformer prediction. The policy engine maintains moderation decisions, while human reviewers provide final oversight for escalated cases.
+
+---
+
+## 🛠️ 4. Technology Stack
+
+| Category | Technologies |
+|---|---|
+| Programming Language | Python 3.12 |
+| Deep Learning | PyTorch |
+| NLP / Transformers | Hugging Face Transformers |
+| Transformer Model | XLM-RoBERTa |
+| Machine Learning | Scikit-learn |
+| Feature Extraction | TF-IDF |
+| Baseline Classifier | Logistic Regression |
+| Generative AI | Google Gemini 2.5 Flash |
+| LLM Integration | Google GenAI SDK |
+| Data Processing | Pandas, NumPy |
+| Frontend | Streamlit |
+| Visualization | Plotly |
+| Database | SQLite |
+| ORM | SQLAlchemy |
+| Testing | Pytest |
+
+---
+
+## 📊 5. Dataset and Preprocessing
+
+The project uses the **Indo-HateSpeech** benchmark dataset for code-mixed Hindi-English hate speech and offensive language detection.
+
+**Dataset Reference:**
+
+Kaware, S. (2024). *Indo-HateSpeech: A Code-Mixed Dataset for Hate Speech and Offensive Language Detection in Hindi-English Discourse.*
+
+Dataset DOI: [10.17632/snc7mxpj6t.1](https://doi.org/10.17632/snc7mxpj6t.1)
+
+### Dataset Preparation
+
+| Description | Samples |
+|---|---:|
+| Cleaned Dataset | 57,262 |
+| Training Set (70%) | 40,083 |
+| Validation Set (15%) | 8,589 |
+| Testing Set (15%) | 8,590 |
+
+The dataset was cleaned by removing null entries, duplicates, and conflicting-label records.
+
+A stratified train-validation-test split was used to preserve class distribution.
+
+### Label Mapping
+
+The original dataset labels were provisionally mapped as follows:
+
+| Original Label | Project Label |
+|---|---|
+| HS0 | Neutral (0) |
+| HS1 | Offensive (1) |
+| HSN | Hate (2) |
+
+**Important:** This is a provisional intensity-based mapping. The original labels do not provide a perfectly verified semantic distinction between general offensive language and targeted hate speech. Label noise and class imbalance remain limitations of the dataset.
+
+Raw and processed dataset files are not included in this public repository due to dataset licensing and redistribution considerations.
+
+---
+
+## 📈 6. Model Performance and Evaluation
+
+Two supervised models were developed and evaluated:
+
+1. TF-IDF + Logistic Regression
+2. Fine-tuned XLM-RoBERTa
+
+### Evaluation Metrics
+
+| Metric | TF-IDF + Logistic Regression | XLM-RoBERTa |
+|---|---:|---:|
+| Test Accuracy | 89.23% | 93.40% |
+| Macro F1 Score | 74.60% | 86.85% |
+
+**Evaluation note:** These figures refer to the respective full-test evaluation runs. The transformer results are from the original full test evaluation, not the later smaller diagnostic run.
+
+### Baseline Model
+
+The TF-IDF + Logistic Regression model uses character-level n-gram features (3–5) and provides a lightweight benchmark for comparison.
+
+Baseline performance by class:
+
+| Category | F1 Score |
+|---|---:|
+| Neutral | 95.44% |
+| Offensive | 71.34% |
+| Hate | 57.11% |
+
+### Why Macro F1?
+
+The dataset is imbalanced, with Neutral samples forming the majority class.
+
+Macro F1 gives equal importance to all three classes, making it useful for evaluating performance on minority categories such as Hate.
+
+**Note:** Model performance depends on the dataset, label quality, and evaluation protocol. These results should not be interpreted as a guarantee of reliable hate speech detection in every real-world context.
+
+---
+
+## 🖥️ 7. Application Modules
+
+The application includes a main dashboard and five dedicated modules.
+
+| Module | Functionality |
+|---|---|
+| Dashboard | Application overview, system status, and moderation statistics |
+| Analyze Text | Single-text classification and contextual analysis |
+| Model Lab | Baseline and transformer comparison, confusion matrices, and inference testing |
+| AI Moderation Agent | Contextual analysis, identity targeting, and policy decisions |
+| Human Review | Review queue, moderator decisions, and audit notes |
+| Analytics | Moderation trends, confidence distributions, and searchable audit records |
+
+---
+
+## 📁 8. Project Structure
+
+```text
+HinglishGuard-AI/
+│
+├── app.py
+├── config.py
+├── requirements.txt
+├── README.md
+├── .env.example
+├── .gitignore
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── models/
+│   ├── baseline/
+│   └── transformers/
+│
+├── src/
+│   ├── preprocessing.py
+│   ├── classifier.py
+│   ├── model_evaluation.py
+│   ├── moderation_agent.py
+│   ├── policy_engine.py
+│   ├── database.py
+│   ├── prepare_dataset.py
+│   ├── train_baseline.py
+│   ├── train_transformer.py
+│   └── transformer_classifier.py
+│
+├── pages/
+│   ├── 1_Analyze_Text.py
+│   ├── 2_Model_Lab.py
+│   ├── 3_AI_Moderation_Agent.py
+│   ├── 4_Human_Review.py
+│   └── 5_Analytics.py
+│
+└── tests/
 ```
 
 ---
 
-## 🛠️ Technology Stack
-
-| Domain | Technology / Library | Purpose |
-| :--- | :--- | :--- |
-| **Language** | Python 3.12 (Windows AMD64) | Core application and testing runtime |
-| **Deep Learning** | PyTorch 2.1+ & Hugging Face Transformers | XLM-RoBERTa tokenization, fine-tuning, and CPU inference |
-| **Machine Learning** | Scikit-Learn & Joblib | TF-IDF vectorization, Logistic Regression baseline, and metrics |
-| **GenAI & LLMs** | Google GenAI SDK (`google.genai`) | Gemini 2.5 Flash agent with structured Pydantic schema |
-| **Frontend UI** | Streamlit 1.67+ & Plotly | Interactive multi-page dashboard, telemetry heatmaps, and charts |
-| **Database** | SQLite & SQLAlchemy 2.0+ ORM | Persistent moderation records, review queue, and audit trail |
-| **Text Processing** | Regex, NLTK, unicodedata (NFKC) | Hinglish code-mixed cleaning and token normalization |
-| **Testing** | Pytest 9.2+ | Automated unit, integration, and end-to-end verification (75 tests) |
-
----
-
-## 📊 Dataset Attribution & Licensing
-
-HinglishGuard AI was developed and evaluated using the **Indo-HateSpeech** benchmark corpus:
-- **Reference**: Kaware, S. (2024). *Indo-HateSpeech: A Code-Mixed Dataset for Hate Speech and Offensive Language Detection in Hindi-English Discourse*.
-- **Dataset Size**: 57,262 cleaned samples partitioned into an isolated 70% / 15% / 15% split:
-  - **Train**: 40,083 samples
-  - **Validation**: 8,589 samples
-  - **Test**: 8,590 samples (strictly isolated; zero data leakage)
-- **License / Redistribution**: The Indo-HateSpeech dataset is distributed under academic research terms. To respect licensing boundaries, raw data files (`.csv`) are excluded from this repository. Users can reproduce the exact dataset partition using the instructions in `data/processed/transformer_training_guide.md`.
-- **Provisional Label Mapping**:
-  - `HS0` $\rightarrow$ **Neutral (0)**: Benign conversational text, friendly banter, factual reporting.
-  - `HS1` $\rightarrow$ **Offensive (1)**: Vulgar slang, non-targeted swearing, personal insults.
-  - `HSN` $\rightarrow$ **Hate (2)**: Targeted communal hostility, religious attacks, incitement.
-
----
-
-## 📈 Model Performance & Evaluation
-
-Models were evaluated strictly on the **unseen 8,590-sample test set** (`data/processed/test.csv`).
-
-### Global Benchmark Comparison
-
-| Metric | TF-IDF Baseline (Char 3–5, C=5.0) | XLM-RoBERTa (Fine-Tuned) | Delta Improvement |
-| :--- | :---: | :---: | :---: |
-| **Test Accuracy** | 89.23% | **93.67%** | **+4.44%** |
-| **Macro Precision** | 73.33% | **86.92%** | **+13.59%** |
-| **Macro Recall** | 76.02% | **92.98%** | **+16.96%** |
-| **Macro F1 (Primary Metric)** | 74.60% | **89.59%** | **+14.99%** |
-| **Weighted F1** | 89.49% | **93.95%** | **+4.46%** |
-
-### Per-Class Detailed Breakdown (XLM-RoBERTa vs. Baseline)
-
-| Class | Baseline F1 | XLM-RoBERTa F1 | F1 Improvement | Key Behavioral Insight |
-| :--- | :---: | :---: | :---: | :--- |
-| **Neutral (0)** | 95.43% | **96.55%** | +1.12% | High reliability on safe conversational discourse |
-| **Offensive (1)** | 71.34% | **81.90%** | +10.56% | Accurately isolates general profanity from hate |
-| **Hate (2)** | 57.04% | **90.32%** | **+33.28%** | **Drastic reduction in false negatives on communal attacks** |
-
-### 3×3 Confusion Matrix (XLM-RoBERTa on Test Set)
-
-| Actual \ Predicted | Pred Neutral | Pred Offensive | Pred Hate |
-| :--- | :---: | :---: | :---: |
-| **Actual Neutral** | **224** | 14 | 0 |
-| **Actual Offensive** | 2 | **43** | 2 |
-| **Actual Hate** | 0 | 1 | **14** |
-
----
-
-## 🖥️ Application Interface Overview
-
-The Streamlit web application is structured into six modular pages:
-
-1. **Dashboard (`app.py`)**: Executive telemetry, system infrastructure health indicators, model availability status, and recent moderation audit tables.
-2. **1. Analyze Text (`pages/1_Analyze_Text.py`)**: Production single-text classification using XLM-RoBERTa with live probability distributions and on-demand Gemini AI contextual analysis.
-3. **2. Model Lab (`pages/2_Model_Lab.py`)**: In-depth benchmark comparisons, interactive confusion matrices, and a live side-by-side inference arena with CPU latency timers.
-4. **3. AI Moderation Agent (`pages/3_AI_Moderation_Agent.py`)**: Parallel multi-agent evaluation hub inspecting identity targeting, severity, and policy arbitration.
-5. **4. Human Review (`pages/4_Human_Review.py`)**: HITL review queue allowing human moderators to inspect flagged content, record audit notes, and override classifications without deleting AI predictions.
-6. **5. Analytics (`pages/5_Analytics.py`)**: System-wide throughput trends, confidence distributions, and full-text searchable audit logs.
-
-### UI Preview
-```
-+------------------------------------------------------------------------------------+
-| 🛡️ HinglishGuard AI Dashboard                                                      |
-| [Status: XLM-RoBERTa Active]  [TF-IDF Baseline Ready]  [Gemini Agent Configured]   |
-+------------------------------------------------------------------------------------+
-| Total Analyzed: 1,240   Pending Review: 12   Resolved: 48   Disagreements: 14      |
-+------------------------------------------------------------------------------------+
-| [Class Distribution Chart]            | [Policy Actions: APPROVE / FLAG / ESCALATE]|
-+------------------------------------------------------------------------------------+
-```
-
----
-
-## 🚀 Installation & Setup (Windows AMD64)
+## 🚀 9. Installation and Setup
 
 ### Prerequisites
+
 - Windows 10/11 (64-bit)
-- Python 3.12 (Python 3.12.10 recommended)
-- Git for Windows
+- Python 3.12
+- Git
+- Google Gemini API key (optional, required for contextual LLM analysis)
 
 ### Step 1: Clone the Repository
+
 ```powershell
-git clone https://github.com/yourusername/hinglishguard-ai.git
-cd hinglishguard-ai
+git clone https://github.com/nitakshisingh/HinglishGuard-AI.git
+cd HinglishGuard-AI
 ```
 
-### Step 2: Create and Activate Virtual Environment
+### Step 2: Create a Virtual Environment
+
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
 ### Step 3: Install Dependencies
+
 ```powershell
-pip install --upgrade pip
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
 ### Step 4: Configure Environment Variables
-Copy `.env.example` to `.env`:
+
+Create a `.env` file from the example:
+
 ```powershell
 copy .env.example .env
 ```
-Open `.env` in any text editor and supply your Google Gemini API key:
+
+Open `.env` and configure your Gemini API key:
+
 ```ini
-# Google Gemini API Configuration
 GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemini-2.5-flash
 
-# Application Settings
 APP_ENV=development
 DATABASE_URL=sqlite:///data/moderation.db
 ```
-*(Note: If no API key is provided, the application runs normally using the supervised models and gracefully disables contextual LLM analysis without crashing).*
 
-### Step 5: Obtain Model Checkpoints
-Due to GitHub file size limits, large model weights (`model.safetensors`, 1.11 GB) are not checked into Git.
-- **Option A (Train on Google Colab GPU)**: Run the provided cloud notebook following [`data/processed/transformer_training_guide.md`](file:///c:/Users/mritu/OneDrive/Documents/projects/Hate%20Speech%20Detection/data/processed/transformer_training_guide.md) and download the resulting `best_model/` folder to `models/transformers/xlm_roberta_hinglish/best_model/`.
-- **Option B (Run with Baseline)**: If transformer weights are not present, the application operates in lightweight baseline mode using `models/baseline/`.
+Never commit your actual `.env` file or API key to GitHub.
 
-### Step 6: Launch the Streamlit Application
-```powershell
-streamlit run app.py
-```
-Open your browser at `http://localhost:8501`.
+The application can operate without Gemini credentials using its available supervised classification functionality.
 
----
+### Step 5: Obtain Transformer Model Weights
 
-## 🧪 Testing Suite
+The fine-tuned XLM-RoBERTa model weights are approximately 1.1 GB and are excluded from this GitHub repository.
 
-The project includes 75 automated unit, integration, and end-to-end tests covering data cleaning, database transactions, model loading, policy arbitration, mock LLM evaluations, and Streamlit helpers.
+To use transformer inference, obtain the trained model checkpoint and place the `best_model/` directory at:
 
-To run the complete test suite:
-```powershell
-.\.venv\Scripts\python.exe -m pytest -v
+```text
+models/transformers/xlm_roberta_hinglish/best_model/
 ```
 
-All 75 tests run with fully mocked model weights and mocked API responses, executing in under 90 seconds without requiring a GPU or active internet connection.
+Refer to the dataset preparation and transformer training guide in `data/processed/` for the training workflow.
+
+If transformer weights are unavailable, use the available baseline model where supported by the application.
+
+### Step 6: Run the Application
+
+```powershell
+python -m streamlit run app.py
+```
+
+Open:
+
+```text
+http://localhost:8501
+```
 
 ---
 
-## ⚠️ Known Limitations & Future Roadmap
+## 🧪 10. Testing
 
-- **Implicit Identity-Hate in Supervised Head**: As documented in `data/processed/false_negative_investigation_report.md`, the supervised classifier relies heavily on explicit vulgar slurs. Syntactically clean English statements advocating hate (e.g. *"People from this community should be hated"*) are caught by the **Gemini Moderation Agent** and escalated by the **Policy Engine**, proving the necessity of the hybrid design.
-- **CPU Inference Latency**: XLM-RoBERTa inference takes $\approx 900$ ms per sample on a modern multi-core CPU. GPU acceleration is recommended for high-volume production queues.
-- **Future Improvements**:
-  - Fine-tuning with Focal Loss ($\gamma = 2.0$) to penalize overconfident easy negatives on imbalanced classes.
-  - Active learning pipeline feeding human-reviewed disagreements back into periodic model fine-tuning.
-  - Containerization via Docker for multi-platform orchestration.
+The project includes 75 automated tests covering:
+
+- Text preprocessing.
+- Database operations.
+- Model loading and inference.
+- Moderation policy decisions.
+- Gemini agent integration using mocked API responses.
+- Human review workflow.
+- Streamlit application helpers.
+- End-to-end functionality.
+
+Run the test suite:
+
+```powershell
+python -m pytest -v
+```
+
+The test suite uses mocked model weights and API responses where appropriate, so the tests do not require a live Gemini API call or GPU.
 
 ---
 
-## 👤 Author
+## ⚠️ 11. Limitations and Future Improvements
 
-Developed by **[Your Name]**
-- **GitHub**: [github.com/yourusername](https://github.com/yourusername)
-- **LinkedIn**: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- **Project Repository**: [github.com/yourusername/hinglishguard-ai](https://github.com/yourusername/hinglishguard-ai)
+### Current Limitations
+
+- **Dataset Label Quality:** The provisional label mapping may not perfectly distinguish offensive language from targeted hate speech.
+- **Class Imbalance:** Neutral samples significantly outnumber Hate samples.
+- **Implicit Hate Detection:** The supervised classifier may miss subtle identity-targeted hostility expressed without explicit abusive vocabulary.
+- **Contextual Model Dependence:** Gemini analysis depends on API availability and response quality.
+- **Inference Latency:** Transformer CPU inference is slower than lightweight baseline classification.
+- **Generalization:** Performance on one benchmark does not guarantee performance on every Hinglish dialect or social media domain.
+
+### Future Improvements
+
+- Improve dataset quality with human-verified labels.
+- Explore focal loss and additional imbalance-handling techniques.
+- Introduce active learning using human-reviewed examples.
+- Expand evaluation to additional Hinglish and multilingual datasets.
+- Optimize transformer inference latency.
+- Containerize the application using Docker.
+- Extend the moderation system with additional languages and dialects.
 
 ---
 
-## 📄 License
+## 👩‍💻 12. Author
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details. Dataset usage is subject to the research licensing terms of the original Indo-HateSpeech benchmark corpus.
+**Nitakshi Singh**
+
+B.Tech – Artificial Intelligence and Machine Learning
+
+Noida Institute of Engineering and Technology
+
+- **GitHub:** [nitakshisingh](https://github.com/nitakshisingh)
+- **LinkedIn:** [Nitakshi Singh](https://www.linkedin.com/in/nitakshi-singh/)
+- **Project Repository:** [HinglishGuard AI](https://github.com/nitakshisingh/HinglishGuard-AI)
+
+---
+
+## 📄 13. License
+
+Please refer to the repository's `LICENSE` file for licensing terms.
+
+The Indo-HateSpeech dataset is subject to its original dataset licensing and redistribution conditions. This project does not redistribute the raw dataset files.
